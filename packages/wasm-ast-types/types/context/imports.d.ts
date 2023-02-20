@@ -12,9 +12,8 @@ export declare const UTILS: {
     toUtf8: string;
     selectorFamily: string;
     StdFee: string;
-    CosmWasmClient: string;
-    ExecuteResult: string;
-    SigningCosmWasmClient: string;
+    MsgExecuteContractResponse: string;
+    SecretNetworkClient: string;
     useQuery: (context: RenderContext) => {
         type: string;
         path: string;

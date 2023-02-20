@@ -36,7 +36,7 @@ export default async (
   const body = [];
 
   body.push(
-    w.importStmt(['cosmWasmClient'], './chain')
+    w.importStmt(['SecretNetworkClient'], './chain')
   );
 
   body.push(

@@ -266,7 +266,7 @@ export const createRecoilQueryClient = (
                                 t.callExpression(
                                   t.identifier('get'),
                                   [
-                                    t.identifier('cosmWasmClient')
+                                    t.identifier('SecretNetworkClient')
                                   ]
                                 )
                               )

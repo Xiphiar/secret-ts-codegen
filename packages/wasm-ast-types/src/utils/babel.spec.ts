@@ -14,10 +14,9 @@ import { expectCode } from '../../test-utils';
 it('top import', async () => {
     expectCode(
         importStmt([
-            'CosmWasmClient',
-            'ExecuteResult',
-            'SigningCosmWasmClient'
-        ], '@cosmjs/cosmwasm-stargate')
+            'SecretNetworkClient',
+            'MsgExecuteContractResponse',
+        ], 'secretjs')
     );
 });
 
@@ -105,7 +104,7 @@ it('interfaces', async () => {
                                                     t.tsStringKeyword()
                                                 ))
                                             ],
-                                            promiseTypeAnnotation('ExecuteResult')
+                                            promiseTypeAnnotation('MsgExecuteContractResponse')
                                         )
                                     )
                                 )
@@ -131,7 +130,7 @@ it('readonly classes', async () => {
                         [
                             // client
                             classProperty('client', t.tsTypeAnnotation(
-                                t.tsTypeReference(t.identifier('CosmWasmClient'))
+                                t.tsTypeReference(t.identifier('SecretNetworkClient'))
                             )),
 
                             // contractAddress
@@ -143,7 +142,7 @@ it('readonly classes', async () => {
                             t.classMethod('constructor',
                                 t.identifier('constructor'),
                                 [
-                                    typedIdentifier('client', t.tsTypeAnnotation(t.tsTypeReference(t.identifier('CosmWasmClient')))),
+                                    typedIdentifier('client', t.tsTypeAnnotation(t.tsTypeReference(t.identifier('SecretNetworkClient')))),
                                     typedIdentifier('contractAddress', t.tsTypeAnnotation(t.tsStringKeyword()))
 
                                 ],
@@ -204,12 +203,19 @@ it('readonly classes', async () => {
                                                             t.thisExpression(),
                                                             t.identifier('client')
                                                         ),
-                                                        t.identifier('queryContractSmart')
+                                                        t.identifier('query.compute.queryContract')
                                                     ),
                                                     [
-                                                        t.memberExpression(t.thisExpression(), t.identifier('contractAddress')),
+                                                        // t.memberExpression(t.thisExpression(), t.identifier('contractAddress')),
                                                         t.objectExpression([
                                                             // props
+                                                            t.objectProperty(
+                                                                t.identifier('contractAddress'),
+                                                                t.identifier('contractAddress'),
+                                                                true,
+                                                                true,
+                                                            ),
+
                                                             t.objectProperty(
                                                                 t.identifier('owner'),
                                                                 t.identifier('owner'),
@@ -274,7 +280,7 @@ it('mutation classes', async () => {
                         [
                             // client
                             classProperty('client', t.tsTypeAnnotation(
-                                t.tsTypeReference(t.identifier('SigningCosmWasmClient'))
+                                t.tsTypeReference(t.identifier('SecretNetworkClient'))
                             )),
 
                             // contractAddress
@@ -286,7 +292,7 @@ it('mutation classes', async () => {
                             t.classMethod('constructor',
                                 t.identifier('constructor'),
                                 [
-                                    typedIdentifier('client', t.tsTypeAnnotation(t.tsTypeReference(t.identifier('SigningCosmWasmClient')))),
+                                    typedIdentifier('client', t.tsTypeAnnotation(t.tsTypeReference(t.identifier('SecretNetworkClient')))),
                                     typedIdentifier('contractAddress', t.tsTypeAnnotation(t.tsStringKeyword()))
                                 ],
                                 t.blockStatement(
@@ -407,7 +413,7 @@ it('mutation classes', async () => {
                                             t.tsTypeParameterInstantiation(
                                                 [
                                                     t.tSTypeReference(
-                                                        t.identifier('ExecuteResult')
+                                                        t.identifier('MsgExecuteContractResponse')
                                                     )
                                                 ]
                                             )

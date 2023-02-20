@@ -30,16 +30,17 @@ interface ReactQueryMutationHookInterface {
 /**
  * Example:
 ```
-export interface Cw4UpdateMembersMutation {
-  client: Cw4GroupClient
-  args: {
-    tokenId: string
-    remove: string[]
-  }
-  options?: Omit<
-    UseMutationOptions<ExecuteResult, Error, Pick<Cw4UpdateMembersMutation, 'args'>>,
-    'mutationFn'
-  >
+ export interface Cw721RevokeMutation {
+  client: Cw721Client;
+  msg: {
+    spender: string;
+    tokenId: string;
+  };
+  args?: {
+    fee?: number | StdFee | "auto";
+    memo?: string;
+    funds?: Coin[];
+  };
 }
 ```
  */
@@ -64,7 +65,7 @@ interface ReactQueryMutationHook {
  * Example:
 ```
 export const useCw4UpdateMembersMutation = ({ client, options }: Omit<Cw4UpdateMembersMutation, 'args'>) =>
-  useMutation<ExecuteResult, Error, Pick<Cw4UpdateMembersMutation, 'args'>>(
+  useMutation<MsgExecuteContractResponse, Error, Pick<Cw4UpdateMembersMutation, 'args'>>(
     ({ args }) => client.updateMembers(args),
     options
   )

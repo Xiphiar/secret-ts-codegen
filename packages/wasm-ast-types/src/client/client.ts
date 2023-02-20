@@ -115,12 +115,23 @@ export const createWasmQueryMethod = (
                   t.thisExpression(),
                   t.identifier('client')
                 ),
-                t.identifier('queryContractSmart')
+                t.identifier('query.compute.queryContract')
               ),
               [
-                t.memberExpression(t.thisExpression(), t.identifier('contractAddress')),
                 t.objectExpression([
-                  actionArg
+                  // param contractAddress:
+                  t.objectProperty(
+                    t.identifier('contractAddress'),
+                    t.memberExpression(t.thisExpression(), t.identifier('contractAddress')),
+                  ),
+
+                  // param query:
+                  t.objectProperty(
+                    t.identifier('query'),
+                    t.objectExpression(
+                      [actionArg]
+                    ),
+                  ),
                 ])
               ]
             )
@@ -151,7 +162,7 @@ export const createQueryClass = (
   queryMsg: QueryMsg
 ) => {
 
-  context.addUtil('CosmWasmClient');
+  context.addUtil('SecretNetworkClient');
 
   const propertyNames = getMessageProperties(queryMsg)
     .map(method => Object.keys(method.properties)?.[0])
@@ -171,7 +182,7 @@ export const createQueryClass = (
       [
         // client
         classProperty('client', t.tsTypeAnnotation(
-          t.tsTypeReference(t.identifier('CosmWasmClient'))
+          t.tsTypeReference(t.identifier('SecretNetworkClient'))
         )),
 
         // contractAddress
@@ -183,7 +194,7 @@ export const createQueryClass = (
         t.classMethod('constructor',
           t.identifier('constructor'),
           [
-            typedIdentifier('client', t.tsTypeAnnotation(t.tsTypeReference(t.identifier('CosmWasmClient')))),
+            typedIdentifier('client', t.tsTypeAnnotation(t.tsTypeReference(t.identifier('SecretNetworkClient')))),
             typedIdentifier('contractAddress', t.tsTypeAnnotation(t.tsStringKeyword()))
 
           ],
@@ -259,7 +270,7 @@ export const createWasmExecMethod = (
   jsonschema: JSONSchema
 ) => {
 
-  context.addUtil('ExecuteResult');
+  context.addUtil('MsgExecuteContractResponse');
   context.addUtil('StdFee');
   context.addUtil('Coin');
 
@@ -330,7 +341,7 @@ export const createWasmExecMethod = (
           t.tsTypeParameterInstantiation(
             [
               t.tSTypeReference(
-                t.identifier('ExecuteResult')
+                t.identifier('MsgExecuteContractResponse')
               )
             ]
           )
@@ -350,7 +361,7 @@ export const createExecuteClass = (
   execMsg: ExecuteMsg
 ) => {
 
-  context.addUtil('SigningCosmWasmClient');
+  context.addUtil('SecretNetworkClient');
 
   const propertyNames = getMessageProperties(execMsg)
     .map(method => Object.keys(method.properties)?.[0])
@@ -421,7 +432,7 @@ export const createExecuteClass = (
       [
         // client
         classProperty('client', t.tsTypeAnnotation(
-          t.tsTypeReference(t.identifier('SigningCosmWasmClient'))
+          t.tsTypeReference(t.identifier('SecretNetworkClient'))
         ), false, false, noImplicitOverride),
 
         // sender
@@ -438,7 +449,7 @@ export const createExecuteClass = (
         t.classMethod('constructor',
           t.identifier('constructor'),
           [
-            typedIdentifier('client', t.tsTypeAnnotation(t.tsTypeReference(t.identifier('SigningCosmWasmClient')))),
+            typedIdentifier('client', t.tsTypeAnnotation(t.tsTypeReference(t.identifier('SecretNetworkClient')))),
             typedIdentifier('sender', t.tsTypeAnnotation(t.tsStringKeyword())),
             typedIdentifier('contractAddress', t.tsTypeAnnotation(t.tsStringKeyword()))
           ],
@@ -471,7 +482,7 @@ export const createExecuteInterface = (
       return createPropertyFunctionWithObjectParamsForExec(
         context,
         methodName,
-        'ExecuteResult',
+        'MsgExecuteContractResponse',
         jsonschema.properties[underscoreName]
       );
     });
